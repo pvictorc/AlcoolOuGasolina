@@ -44,7 +44,7 @@
             android:textStyle="bold" />
 
         <EditText
-            android:id="@+id/edAlcool"
+            android:id="@+id/edGasolina"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="30dp"
@@ -53,11 +53,12 @@
             android:inputType="numberDecimal" />
 
         <EditText
-            android:id="@+id/edGasolina"
+            android:id="@+id/edAlcool"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginHorizontal="30dp"
             android:ems="10"
-            android:hint="alcool"
+            android:hint="Preço álcool"
             android:inputType="numberDecimal" />
 
         <Switch
