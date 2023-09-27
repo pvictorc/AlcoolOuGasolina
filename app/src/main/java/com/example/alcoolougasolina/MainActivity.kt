@@ -25,23 +25,37 @@ class MainActivity : AppCompatActivity() {
         val btCalc: Button = findViewById(R.id.btCalcular)
         val switchPercent: Switch = findViewById(R.id.swPercentual)
         val resultText: TextView = findViewById(R.id.resultado)
+        resultText.visibility = View.INVISIBLE
         val editAlcool: EditText = findViewById(R.id.edAlcool)
         val editGasosa: EditText = findViewById(R.id.edGasolina)
 
         btCalc.setOnClickListener(View.OnClickListener {
             //código do evento
 
-            var precoGas:Float = 0F
-            precoGas = editGasosa.text.toString().toFloat()
-            var precoAlcool:Float = 0F
-            precoAlcool = editAlcool.text.toString().toFloat()
-            // Privilegia Etanol em caso de empate
-            if (precoGas*percentual >= precoAlcool )
-                    resultText.text = "Abasteça com Etanol"
-            else
-                    resultText.text = "Abasteça com Gasolina"
+            var precoGas: Float = 0F
+            var precoAlcool: Float = 0F
+            try {
+                if ( (editGasosa.text.toString() != "")
+                    && (editAlcool.text.toString() != "") ) {
+                    precoGas = editGasosa.text.toString().toFloat()
+                    precoAlcool = editAlcool.text.toString().toFloat()
 
-            resultText.visibility = android.view.View.VISIBLE
+                    // Privilegia Etanol em caso de empate
+                    if (precoGas*percentual >= precoAlcool )
+                        resultText.text = "Abasteça com \nETANOL"
+                    else
+                        resultText.text = "Abasteça com \nGASOLINA"
+
+
+                }
+                else resultText.text = "Preencha os preços \nda Gasolina e Etanol"
+
+                resultText.visibility = android.view.View.VISIBLE
+
+            } catch (e: Exception){
+                throw Exception("String mal formatada")
+            }
+
             var temp = "%.2f".format(percentual)
             Log.d("PDM23","No btCalcular, $temp")
         })
@@ -50,6 +64,7 @@ class MainActivity : AppCompatActivity() {
                 percentual=0.75
             }
             else percentual=0.70
+            btCalc.callOnClick()
             Log.d("PDM23","Var percentual mudada para $percentual")
         })
 
