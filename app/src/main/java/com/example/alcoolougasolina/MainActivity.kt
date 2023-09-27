@@ -7,6 +7,8 @@ import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Switch
+import android.widget.TextView
 
 class MainActivity : AppCompatActivity() {
     var percentual:Double = 0.7
@@ -15,15 +17,42 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         if (savedInstanceState != null) {
             percentual = savedInstanceState.getDouble("percentual")
-        }
+            Log.d("PDM23","No onCreate, recuperou percentual $percentual")
+        } else
+            percentual = 0.70
         Log.d("PDM23","No onCreate, $percentual")
 
         val btCalc: Button = findViewById(R.id.btCalcular)
+        val switchPercent: Switch = findViewById(R.id.swPercentual)
+        val resultText: TextView = findViewById(R.id.resultado)
+        val editAlcool: EditText = findViewById(R.id.edAlcool)
+        val editGasosa: EditText = findViewById(R.id.edGasolina)
+
         btCalc.setOnClickListener(View.OnClickListener {
             //código do evento
-            percentual=0.75
-            Log.d("PDM23","No btCalcular, $percentual")
+
+            var precoGas:Float = 0F
+            precoGas = editGasosa.text.toString().toFloat()
+            var precoAlcool:Float = 0F
+            precoAlcool = editAlcool.text.toString().toFloat()
+            // Privilegia Etanol em caso de empate
+            if (precoGas*percentual >= precoAlcool )
+                    resultText.text = "Abasteça com Etanol"
+            else
+                    resultText.text = "Abasteça com Gasolina"
+
+            resultText.visibility = android.view.View.VISIBLE
+            var temp = "%.2f".format(percentual)
+            Log.d("PDM23","No btCalcular, $temp")
         })
+        switchPercent.setOnClickListener(View.OnClickListener {
+            if( switchPercent.isChecked ){
+                percentual=0.75
+            }
+            else percentual=0.70
+            Log.d("PDM23","Var percentual mudada para $percentual")
+        })
+
     }
 
 override fun onResume(){
@@ -36,24 +65,24 @@ override fun onResume(){
 }
 override fun onStart(){
     super.onStart()
-    Log.d("PDM23","No onResume")
+    Log.d("PDM23","No onStart")
 }
 override fun onPause(){
     super.onPause()
-    Log.d("PDM23","No onResume")
+    Log.d("PDM23","No onPause")
 }
 override fun onStop(){
     super.onStop()
-    Log.d("PDM23","No onResume")
+    Log.d("PDM23","No onStop")
 }
 override fun onDestroy(){
-
     super.onDestroy()
     Log.d("PDM23","No onResume")
 }
+override fun onSaveInstanceState(outState: Bundle) {
+    outState.putDouble("percentual",percentual)
+    Log.d("PDM23","Chamou o onSaveInstanceState")
+    super.onSaveInstanceState(outState)
+}
 
-    override fun onSaveInstanceState(outState: Bundle, outPersistentState: PersistableBundle) {
-        outState.putDouble("percentual",percentual)
-        super.onSaveInstanceState(outState, outPersistentState)
-    }
 }
